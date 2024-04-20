@@ -1,5 +1,6 @@
 import express from "express";
 import bodyParser from "body-parser";
+import { Utils } from "./utils.mjs";
 
 const app = express();
 
@@ -12,5 +13,5 @@ app.get("/", (req, res) => {
 });
 
 app.listen(port, () => {
-  console.log(`Running --- localhost:${port}/`);
+  console.log(`Running --- http://localhost:${port}`);
 });
