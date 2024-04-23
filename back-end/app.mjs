@@ -42,8 +42,14 @@ app.get("/hint/generate", (req, res) => {
   res.status(501).send("Not Implemented");
 });
 
-app.get("/hint/amount", (req, res) => {
-  res.status(501).send("Not Implemented");
+app.get("/hint/amount", async (req, res) => {
+  let result = await Utils.getHint();
+
+  if (typeof result !== "number") {
+    res.status(500).send("Database Error");
+  } else {
+    res.json({ hintLeft: result });
+  }
 });
 
 app.put("/hint/amount", (req, res) => {
