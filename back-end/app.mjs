@@ -45,15 +45,21 @@ app.get("/hint/generate", (req, res) => {
 app.get("/hint/amount", async (req, res) => {
   let result = await Utils.getHint();
 
-  if (typeof result !== "number") {
+  if (result === null) {
     res.status(500).send("Database Error");
   } else {
     res.json({ hintLeft: result });
   }
 });
 
-app.put("/hint/amount", (req, res) => {
-  res.status(501).send("Not Implemented");
+app.put("/hint/amount", async (req, res) => {
+  let result = await Utils.updateHint();
+
+  if (result === null) {
+    res.status(500).send("Database Error");
+  } else {
+    res.json({ hintLeft: result });
+  }
 });
 
 app.get("/score", (req, res) => {

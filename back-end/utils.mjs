@@ -48,7 +48,21 @@ export class Utils {
     }
   }
 
-  static async updateHint() {}
+  static async updateHint() {
+    try {
+      await db.run(
+        "UPDATE runs SET hint = CASE" +
+          " WHEN hint <= 2 THEN hint + 1" +
+          " ELSE 3 END" +
+          " WHERE id = (SELECT MAX(id) FROM runs)"
+      );
+
+      return await Utils.getHint();
+    } catch (e) {
+      console.error(e);
+      return null;
+    }
+  }
 
   static async getScore() {}
 
