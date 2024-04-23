@@ -12,6 +12,18 @@ app.get("/", (req, res) => {
   res.send("Hello, COMP 426!");
 });
 
+app.get("/guess/:word", (req, res) => {
+  let word = "word" in req.body ? req.body.req : undefined;
+  let result = Utils.guess(word);
+
+  if (!result) {
+    res.status(400).send("Bad Request");
+    return;
+  } else {
+    res.json(result);
+  }
+});
+
 app.listen(port, () => {
   console.log(`Running --- http://localhost:${port}`);
 });
