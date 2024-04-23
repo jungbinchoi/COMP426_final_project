@@ -14,6 +14,18 @@ app.get("/", (req, res) => {
   res.send("Hello, COMP 426!");
 });
 
+app.get("/start/run", (req, res) => {
+  res.status(501).send("Not Implemented");
+});
+
+app.get("/start/game", (req, res) => {
+  res.status(501).send("Not Implemented");
+});
+
+app.get("/end/run", (req, res) => {
+  res.status(501).send("Not Implemented");
+});
+
 app.get("/guess/:word", (req, res) => {
   let word = "word" in req.body ? req.body.req : undefined;
   let result = Utils.guess(word);
@@ -24,6 +36,30 @@ app.get("/guess/:word", (req, res) => {
   } else {
     res.json(result);
   }
+});
+
+app.get("/hint/generate", (req, res) => {
+  res.status(501).send("Not Implemented");
+});
+
+app.get("/hint/amount", (req, res) => {
+  res.status(501).send("Not Implemented");
+});
+
+app.put("/hint/amount", (req, res) => {
+  res.status(501).send("Not Implemented");
+});
+
+app.get("/score", (req, res) => {
+  res.status(501).send("Not Implemented");
+});
+
+app.put("/score", (req, res) => {
+  res.status(501).send("Not Implemented");
+});
+
+app.get("/score/top/amount", (req, res) => {
+  res.status(501).send("Not Implemented");
 });
 
 app.listen(port, () => {
