@@ -5,7 +5,7 @@ export class Utils {
 
   static guess(word) {
     if (word === undefined || typeof word !== "string") {
-      return { valid: false };
+      return null;
     }
 
     if (word === this.#currWord) {
