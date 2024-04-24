@@ -2,8 +2,40 @@ import { db } from "./db.mjs";
 
 export class Utils {
   static #currWord = "";
+  static #currRun = 0;
 
-  static async startRun() {}
+  static async startRun() {
+    try {
+      // Fetch a random word from API
+      let randomWordResponse = await fetch(
+        "https://random-word-api.herokuapp.com/word?length=5"
+      );
+
+      // Check fetch status
+      if (!randomWordResponse.ok) {
+        throw new Error("Random-Word API Error");
+      }
+
+      // Store random word (sent in as an array of one word)
+      let randomWord = await randomWordResponse.json();
+      Utils.#currWord = randomWord[0];
+
+      // Instantiate a new run into the database
+      let newRun = await db.run("INSERT INTO runs VALUES (NULL, 0, 3)");
+      Utils.#currRun = newRun.lastID;
+
+      // Record the word used for this run into the games table
+      await db.run("INSERT INTO games VALUES (?, ?)", [
+        Utils.#currRun,
+        Utils.#currWord,
+      ]);
+
+      return true;
+    } catch (e) {
+      console.error(e);
+      return null;
+    }
+  }
 
   static async startGame() {}
 

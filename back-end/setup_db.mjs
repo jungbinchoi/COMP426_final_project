@@ -1,7 +1,7 @@
 import { db } from "./db.mjs";
 
 await db.run(
-  "CREATE TABLE runs (id PRIMARY KEY AUTOINCREMENT, score INTEGER NOT NULL, hint INTEGER NOT NULL)"
+  "CREATE TABLE runs (id INTEGER PRIMARY KEY AUTOINCREMENT, score INTEGER NOT NULL, hint INTEGER NOT NULL)"
 );
 
 await db.run(
