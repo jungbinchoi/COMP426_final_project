@@ -64,9 +64,47 @@ export class Utils {
     }
   }
 
-  static async getScore() {}
+  static async getScore() {
+    try {
+      let result = await db.get(
+        "SELECT score FROM runs WHERE id = (SELECT MAX(id) FROM runs)"
+      );
 
-  static async updateScore() {}
+      return result.score;
+    } catch (e) {
+      console.error(e);
+      return null;
+    }
+  }
 
-  static async getTopScore(amount) {}
+  static async updateScore() {
+    try {
+      await db.run(
+        "UPDATE runs SET score = score + 1 WHERE id = (SELECT MAX(id) FROM runs)"
+      );
+
+      return await Utils.getScore();
+    } catch (e) {
+      console.error(e);
+      return null;
+    }
+  }
+
+  static async getTopScore(amount) {
+    if (amount === undefined || typeof amount !== "number") {
+      return { valid: false };
+    }
+
+    try {
+      let result = await db.all(
+        "SELECT score FROM runs ORDER BY score DESC LIMIT ?",
+        amount
+      );
+
+      return result.map((s) => s.score);
+    } catch (e) {
+      console.error(e);
+      return { valid: true };
+    }
+  }
 }

@@ -62,16 +62,41 @@ app.put("/hint/amount", async (req, res) => {
   }
 });
 
-app.get("/score", (req, res) => {
-  res.status(501).send("Not Implemented");
+app.get("/score", async (req, res) => {
+  let result = await Utils.getScore();
+
+  if (result === null) {
+    res.status(500).send("Database Error");
+  } else {
+    res.json({ score: result });
+  }
 });
 
-app.put("/score", (req, res) => {
-  res.status(501).send("Not Implemented");
+app.put("/score", async (req, res) => {
+  let result = await Utils.updateScore();
+
+  if (result === null) {
+    res.status(500).send("Database Error");
+  } else {
+    res.json({ score: result });
+  }
 });
 
-app.get("/score/top/amount", (req, res) => {
-  res.status(501).send("Not Implemented");
+app.get("/score/top/:amount", async (req, res) => {
+  let amount = "amount" in req.body ? req.body.amount : undefined;
+  let result = await Utils.getTopScore(amount);
+
+  if ("valid" in result) {
+    if (result.valid) {
+      res.status(500).send("Database Error");
+    } else {
+      res.status(400).send("Invalid 'amount'");
+    }
+
+    return;
+  } else {
+    res.json({ scores: result });
+  }
 });
 
 app.listen(port, () => {
