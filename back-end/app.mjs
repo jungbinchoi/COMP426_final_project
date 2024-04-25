@@ -14,89 +14,20 @@ app.get("/", (req, res) => {
   res.send("Hello, COMP 426!");
 });
 
-app.get("/start/run", (req, res) => {
-  res.status(501).send("Not Implemented");
+app.get("/word", (req, res) => {
+  res.send("Generate new word");
 });
 
-app.get("/start/game", (req, res) => {
-  res.status(501).send("Not Implemented");
+app.get("/hint", (req, res) => {
+  res.send("Generate new hint");
 });
 
-app.get("/end/run", (req, res) => {
-  res.status(501).send("Not Implemented");
+app.get("/score", (req, res) => {
+  res.send("Returns dictionary of scores");
 });
 
-app.get("/guess/:word", (req, res) => {
-  let word = "word" in req.body ? req.body.req : undefined;
-  let result = Utils.guess(word);
-
-  if (!result) {
-    res.status(400).send("Bad Request");
-    return;
-  } else {
-    res.json(result);
-  }
-});
-
-app.get("/hint/generate", (req, res) => {
-  res.status(501).send("Not Implemented");
-});
-
-app.get("/hint/amount", async (req, res) => {
-  let result = await Utils.getHint();
-
-  if (result === null) {
-    res.status(500).send("Database Error");
-  } else {
-    res.json({ hintLeft: result });
-  }
-});
-
-app.put("/hint/amount", async (req, res) => {
-  let result = await Utils.updateHint();
-
-  if (result === null) {
-    res.status(500).send("Database Error");
-  } else {
-    res.json({ hintLeft: result });
-  }
-});
-
-app.get("/score", async (req, res) => {
-  let result = await Utils.getScore();
-
-  if (result === null) {
-    res.status(500).send("Database Error");
-  } else {
-    res.json({ score: result });
-  }
-});
-
-app.put("/score", async (req, res) => {
-  let result = await Utils.updateScore();
-
-  if (result === null) {
-    res.status(500).send("Database Error");
-  } else {
-    res.json({ score: result });
-  }
-});
-
-app.get("/score/top/:amount", async (req, res) => {
-  let amount = "amount" in req.body ? req.body.amount : undefined;
-  let result = await Utils.getTopScore(amount);
-
-  if ("valid" in result) {
-    if (result.valid) {
-      res.status(500).send("Database Error");
-    } else {
-      res.status(400).send("Invalid 'amount'");
-    }
-
-    return;
-  } else {
-    res.json({ scores: result });
-  }
+app.put("/score", (req, res) => {
+  res.send("Updates the score");
 });
 
 app.listen(port, () => {
