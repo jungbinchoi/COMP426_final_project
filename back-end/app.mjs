@@ -15,7 +15,14 @@ app.get("/", (req, res) => {
 });
 
 app.get("/word", (req, res) => {
-  res.send("Generate new word");
+  let result = Utils.newWord();
+
+  if (result === null) {
+    res.status(500).send("Error: Failed to generate a new word");
+    return;
+  }
+
+  res.json({ word: result });
 });
 
 app.get("/hint", (req, res) => {
