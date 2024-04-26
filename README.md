@@ -9,101 +9,40 @@ Back-End: Express.js
 
 # Back-End Routes
 
-- `GET /start/run` -- Start the run (starts a game as well)
-
+- `GET /word` -- Returns a new unique word
 ```
 {
-	"success": boolean
+	"word": str
 }
 ```
 
-- `GET /start/game` -- Start a game
-
+- `GET /hint` -- Returns a hint
 ```
 {
-	"success": boolean
+	"hint": str
 }
 ```
 
-- `GET /end/run` -- Ends the run
-
+- `GET /score` -- Returns a dictionary of scores
 ```
 {
-	"score": number
+	"1": number,
+	...
+	"6": number
 }
 ```
 
-- `GET /guess/:word` -- Check the guessed word
-
+- `PUT /score` -- Updates the given score
 ```
-Correct
-	{
-		"correct": true,
-		"results": []
-	}
-
-Incorrect
-	{
-		"correct": false,
-		"results": [
-			{
-				"inWord": boolean,
-				"inPlace": boolean
-			},
-			{
-				"inWord": boolean,
-				"inPlace": boolean
-			},
-			...
-		]
-	}
-```
-
-- `GET /hint/generate` -- Generate a hint
-
-```
+INPUT
 {
-	"hintLeft": number,
-	"hint": string
+	"guesses": number
 }
-```
 
-- `GET /hint/amount` -- Returns the remaining number of hints
-
-```
+OUPUT
 {
-	"hintLeft": number
-}
-```
-
-- `PUT /hint/amount` -- Update the number of hints (+1) and return the new amount of hints
-
-```
-{
-	"hintLeft": number
-}
-```
-
-- `GET /score` -- Returns the score for the current game
-
-```
-{
-	"score": number
-}
-```
-
-- `PUT /score` -- Update the score (+1) and return the new score
-
-```
-{
-	"score": number
-}
-```
-
-- `GET /score/top/:amount` -- Returns the top `amount` scores in descending order
-
-```
-{
-	"scores": number[]
+	"1": number,
+	...
+	"6": number
 }
 ```
