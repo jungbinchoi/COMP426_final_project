@@ -38,6 +38,10 @@ export class Utils {
         Utils.#currWord = randWord[0];
 
         checked = Utils.#checkWord();
+
+        if (checked === null) {
+          throw new Error("Word Checking Failed");
+        }
       }
 
       return Utils.#currWord;
@@ -56,7 +60,7 @@ export class Utils {
       return result === undefined;
     } catch (e) {
       console.error(e);
-      return false;
+      return null;
     }
   }
 }
