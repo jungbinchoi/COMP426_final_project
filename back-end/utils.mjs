@@ -1,11 +1,14 @@
 import { db } from "./db.mjs";
 import { apiKey } from "./config.mjs";
+import OpenAI from "openai";
 
 export class Utils {
   static #currWord = "";
+  static #currContext = [];
 
   static async newWord() {
     try {
+      Utils.#newContext();
       return await Utils.#fetchWord();
     } catch (e) {
       console.error(e);
@@ -13,7 +16,31 @@ export class Utils {
     }
   }
 
-  static async newHint() {}
+  static async newHint() {
+    const openai = new OpenAI({ apiKey: apiKey });
+
+    try {
+      if (Utils.#currContext.length === 0) {
+        throw new Error(
+          "Error (utils.mjs/newHint): Current context array is not initialized"
+        );
+      }
+
+      let result = await openai.chat.completions.create({
+        messages: Utils.#currContext,
+        model: "gpt-3.5-turbo",
+      });
+
+      let reply = result.choices[0];
+
+      Utils.#addContext(reply);
+
+      return reply;
+    } catch (e) {
+      console.error(e);
+      return null;
+    }
+  }
 
   static async updateScore() {} // request: "1" or "2" ...
 
@@ -63,5 +90,30 @@ export class Utils {
       console.error(e);
       return null;
     }
+  }
+
+  static #newContext() {
+    Utils.#currContext = [
+      {
+        role: "system",
+        content:
+          "You generate hints for a Wordle game. " +
+          "You generate a short and unique hint each time based on the word given. " +
+          "Each hint will contain information that was not already shown in previous hints.",
+      },
+      {
+        role: "user",
+        content: `Generate a short hint for a Wordle game where the solution is '${
+          Utils.#currWord
+        }' and only return the hint itself. Make sure to not include information already shown in previous hints.`,
+      },
+    ];
+  }
+
+  static #addContext(reply) {
+    Utils.#addContext.push({
+      role: "assistant",
+      content: reply,
+    });
   }
 }
