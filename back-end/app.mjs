@@ -25,8 +25,15 @@ app.get("/word", async (req, res) => {
   res.json({ word: result });
 });
 
-app.get("/hint", (req, res) => {
-  res.send("Generate new hint");
+app.get("/hint", async (req, res) => {
+  let result = await Utils.newHint();
+
+  if (result === null) {
+    res.status(500).send("Error: Failed to generate a new hint");
+    return;
+  }
+
+  res.json({ hint: result });
 });
 
 app.get("/score", (req, res) => {
