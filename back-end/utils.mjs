@@ -1,4 +1,5 @@
 import { db } from "./db.mjs";
+import { apiKey } from "./config.mjs";
 
 export class Utils {
   static #currWord = "";
