@@ -5,7 +5,7 @@ export class Utils {
 
   static async newWord() {
     try {
-      return Utils.#fetchWord();
+      return await Utils.#fetchWord();
     } catch (e) {
       console.error(e);
       return null;
@@ -37,7 +37,7 @@ export class Utils {
 
         Utils.#currWord = randWord[0];
 
-        checked = Utils.#checkWord();
+        checked = await Utils.#checkWord();
 
         if (checked === null) {
           throw new Error("Word Checking Failed");

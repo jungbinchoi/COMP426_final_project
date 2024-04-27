@@ -14,8 +14,8 @@ app.get("/", (req, res) => {
   res.send("Hello, COMP 426!");
 });
 
-app.get("/word", (req, res) => {
-  let result = Utils.newWord();
+app.get("/word", async (req, res) => {
+  let result = await Utils.newWord();
 
   if (result === null) {
     res.status(500).send("Error: Failed to generate a new word");
