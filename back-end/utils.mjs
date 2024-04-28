@@ -48,33 +48,19 @@ export class Utils {
       typeof guess !== "number" ||
       !(guess > 0 && guess < 7)
     ) {
-      return false;
+      return { valid: false };
     }
 
     try {
-      let numStr = "";
+      await db.run(
+        "UPDATE scores SET amount = amount + 1 WHERE number = ?",
+        guess
+      );
 
-      switch (guess) {
-        case 1:
-          numStr = "one";
-        case 2:
-          numStr = "two";
-        case 3:
-          numStr = "three";
-        case 4:
-          numStr = "four";
-        case 5:
-          numStr = "five";
-        case 6:
-          numStr = "six";
-      }
-
-      await db.run("UPDATE scores SET ? = ? + 1", [numStr, numStr]);
-
-      return true;
+      return Utils.getScores();
     } catch (e) {
       console.error(e);
-      return null;
+      return { valid: true };
     }
   } // request: "1" or "2" ...
 
