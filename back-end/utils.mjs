@@ -64,7 +64,15 @@ export class Utils {
     }
   } // request: "1" or "2" ...
 
-  static async getScores() {} // returns: {"1": 20, "2": 10 ...}
+  static async getScores() {
+    try {
+      let result = await db.all("SELECT count FROM scores ORDER BY number ASC");
+      return result.map((c) => c.count);
+    } catch (e) {
+      console.error(e);
+      return null;
+    }
+  } // returns: {"1": 20, "2": 10 ...}
 
   // Private Utility Functions
   static async #fetchWord() {
