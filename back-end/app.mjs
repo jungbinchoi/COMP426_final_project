@@ -36,12 +36,33 @@ app.get("/hint", async (req, res) => {
   res.json({ hint: result });
 });
 
-app.get("/score", (req, res) => {
-  res.send("Returns dictionary of scores");
+app.get("/score", async (req, res) => {
+  let result = await Utils.getScores();
+
+  if (result === null) {
+    res.status(500).send("Error: Failed to retrieve scores");
+    return;
+  }
+
+  res.json({ guesses: result });
 });
 
-app.put("/score", (req, res) => {
-  res.send("Updates the score");
+app.put("/score", async (req, res) => {
+  let guess = "guesses" in req.body ? req.body.guesses : undefined;
+
+  let result = await Utils.updateScore(guess);
+
+  if ("valid" in result) {
+    if (result.valid) {
+      res.status(500).send("Error: Failed to update or retrieve scores");
+    } else {
+      res.status(400).send("Error: Invalid request");
+    }
+
+    return;
+  }
+
+  res.json({ guesses: rseult });
 });
 
 app.listen(port, () => {
