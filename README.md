@@ -12,37 +12,33 @@ Back-End: Express.js
 - `GET /word` -- Returns a new unique word
 ```
 {
-	"word": str
+	"word": string
 }
 ```
 
 - `GET /hint` -- Returns a hint
 ```
 {
-	"hint": str
+	"hint": string
 }
 ```
 
-- `GET /score` -- Returns a dictionary of scores
+- `GET /score` -- Returns an array of scores in ascending order
 ```
 {
-	"1": number,
-	...
-	"6": number
+	"guesses": number[]
 }
 ```
 
-- `PUT /score` -- Updates the given score
+- `PUT /score` -- Updates the given score and returns an array of scores in ascending order
 ```
 INPUT
 {
-	"guesses": number
+	"guess": number
 }
 
 OUPUT
 {
-	"1": number,
-	...
-	"6": number
+	"guesses": number[]
 }
 ```
