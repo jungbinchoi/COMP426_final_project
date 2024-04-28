@@ -42,7 +42,41 @@ export class Utils {
     }
   }
 
-  static async updateScore() {} // request: "1" or "2" ...
+  static async updateScore(guess) {
+    if (
+      guess === undefined ||
+      typeof guess !== "number" ||
+      !(guess > 0 && guess < 7)
+    ) {
+      return false;
+    }
+
+    try {
+      let numStr = "";
+
+      switch (guess) {
+        case 1:
+          numStr = "one";
+        case 2:
+          numStr = "two";
+        case 3:
+          numStr = "three";
+        case 4:
+          numStr = "four";
+        case 5:
+          numStr = "five";
+        case 6:
+          numStr = "six";
+      }
+
+      await db.run("UPDATE scores SET ? = ? + 1", [numStr, numStr]);
+
+      return true;
+    } catch (e) {
+      console.error(e);
+      return null;
+    }
+  } // request: "1" or "2" ...
 
   static async getScores() {} // returns: {"1": 20, "2": 10 ...}
 
