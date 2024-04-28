@@ -48,7 +48,7 @@ app.get("/score", async (req, res) => {
 });
 
 app.put("/score", async (req, res) => {
-  let guess = "guesses" in req.body ? req.body.guesses : undefined;
+  let guess = "guess" in req.body ? req.body.guess : undefined;
 
   let result = await Utils.updateScore(guess);
 
